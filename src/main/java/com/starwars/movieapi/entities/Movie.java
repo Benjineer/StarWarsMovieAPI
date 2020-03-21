@@ -88,23 +88,23 @@ public class Movie implements Serializable {
         this.releaseDate = releaseDate;
     }
 
-//    public List<String> getCharacters() {
-//        return characters;
-//    }
-//
-//    public void setCharacters(List<String> characters) {
-//        this.characters = characters;
-//    }
+    public List<MovieCharacter> getCharacters() {
+        return characters;
+    }
+
+    public void setCharacters(List<MovieCharacter> characters) {
+        this.characters = characters;
+    }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.id);
-        hash = 59 * hash + Objects.hashCode(this.name);
-        hash = 59 * hash + Objects.hashCode(this.openingCrawls);
-        hash = 59 * hash + Objects.hashCode(this.releaseDate);
-        hash = 59 * hash + Objects.hashCode(this.comments);
-//        hash = 59 * hash + Objects.hashCode(this.characters);
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.id);
+        hash = 29 * hash + Objects.hashCode(this.name);
+        hash = 29 * hash + Objects.hashCode(this.openingCrawls);
+        hash = 29 * hash + Objects.hashCode(this.releaseDate);
+        hash = 29 * hash + Objects.hashCode(this.comments);
+        hash = 29 * hash + Objects.hashCode(this.characters);
         return hash;
     }
 
@@ -135,14 +135,11 @@ public class Movie implements Serializable {
         if (!Objects.equals(this.comments, other.comments)) {
             return false;
         }
-//        if (!Objects.equals(this.characters, other.characters)) {
-//            return false;
-//        }
+        if (!Objects.equals(this.characters, other.characters)) {
+            return false;
+        }
         return true;
     }
-    
-    
 
-
-        
+    
 }

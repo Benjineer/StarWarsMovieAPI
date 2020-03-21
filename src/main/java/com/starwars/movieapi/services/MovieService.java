@@ -8,8 +8,8 @@ package com.starwars.movieapi.services;
 
 import com.starwars.movieapi.dtos.CommentDTO;
 import com.starwars.movieapi.dtos.MovieDTO;
-import com.starwars.movieapi.entities.MovieCharacter;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -21,7 +21,7 @@ public interface MovieService {
     
     Long addComment(CommentDTO commentDTO);
     
-    List<MovieCharacter> getMovieCharacters();
+    Map<String, Object> getMovieCharacters(Long id, String gender, String sortParam, String sortDirection);
     
     public List<CommentDTO> getMovieComments(Long id);
     

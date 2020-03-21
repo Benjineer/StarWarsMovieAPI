@@ -6,12 +6,17 @@
 package com.starwars.movieapi.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  *
  * @author Oke
  */
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CommentDTO {
+    
+    private Long id;
     
     @JsonIgnore
     private Long movieId;
@@ -21,6 +26,16 @@ public class CommentDTO {
     private String ipAddress;
     
     private String dateTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    
 
     public Long getMovieId() {
         return movieId;

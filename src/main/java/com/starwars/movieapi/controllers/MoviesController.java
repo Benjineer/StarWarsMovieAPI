@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -43,8 +44,12 @@ public class MoviesController {
     }
     
     @GetMapping("/{id}/characters")
-    public List<Object> getCharacters(@PathVariable String id) {
-        return null;
+    public ResponseEntity<?> getCharacters(@PathVariable Long id, @RequestParam(required = false, defaultValue = "") String gender, @RequestParam(required = false, defaultValue = "") String sortParam, @RequestParam(required = false, defaultValue = "") String sortDirection) {
+        Map<String, Object> movieCharacters = movieService.getMovieCharacters(id, gender, sortParam, sortParam);
+        if(movieCharacters.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(movieCharacters);
     }
     
     @PostMapping("/{id}/comments")
@@ -68,16 +73,6 @@ public class MoviesController {
     public ResponseEntity<List<CommentDTO>> getComments(@PathVariable Long id) {
         List<CommentDTO> movieComments = movieService.getMovieComments(id);
         return ResponseEntity.ok(movieComments);
-    }
-    
-    @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Object input) {
-        return null;
-    }
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        return null;
     }
     
     @ExceptionHandler(Exception.class)

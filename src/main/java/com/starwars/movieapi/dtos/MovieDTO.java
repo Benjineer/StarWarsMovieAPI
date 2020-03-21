@@ -5,13 +5,21 @@
  */
 package com.starwars.movieapi.dtos;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  *
  * @author Oke
  */
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MovieDTO {
+    
+    public static void main(String[] args) {
+        
+    }
+    
+    private Long id;
     
     private String name;
     
@@ -20,6 +28,16 @@ public class MovieDTO {
     private String releaseDate;
     
     private int commentCount;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    
 
     public String getName() {
         return name;
