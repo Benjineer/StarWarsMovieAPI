@@ -7,13 +7,11 @@ package com.starwars.movieapi.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -29,7 +27,7 @@ public class MovieCharacter implements Serializable {
     
     private String name;
     
-    private String height;
+    private int height;
     
     private String mass;
     
@@ -62,11 +60,11 @@ public class MovieCharacter implements Serializable {
         this.name = name;
     }
 
-    public String getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(String height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 

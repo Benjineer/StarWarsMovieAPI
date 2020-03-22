@@ -10,6 +10,7 @@ import com.starwars.movieapi.dtos.CommentDTO;
 import com.starwars.movieapi.dtos.MovieDTO;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  *
@@ -19,7 +20,7 @@ public interface MovieService {
     
     List<MovieDTO> getMovies();
     
-    Long addComment(CommentDTO commentDTO);
+    Optional<Long> addComment(CommentDTO commentDTO);
     
     Map<String, Object> getMovieCharacters(Long id, String gender, String sortParam, String sortDirection);
     

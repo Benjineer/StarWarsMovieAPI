@@ -27,7 +27,6 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +68,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Long addComment(CommentDTO commentDTO) {
+    public Optional<Long> addComment(CommentDTO commentDTO) {
 
         Optional<Movie> optMovie = movieRepository.findById(commentDTO.getMovieId());
 
@@ -82,13 +81,12 @@ public class MovieServiceImpl implements MovieService {
             comment.setIpAddress(commentDTO.getIpAddress());
             comment.setMovie(movie);
 
-            Comment save = commentRepository.save(comment);
+            comment = commentRepository.save(comment);
 
-            return save.getId();
+            return Optional.of(comment.getId());
         }
 
-        return null;
-
+        return Optional.empty();
     }
 
     @Override
@@ -97,38 +95,37 @@ public class MovieServiceImpl implements MovieService {
         Optional<Movie> optMovie = movieRepository.findById(id);
 
         Map<String, Object> hashMap = new HashMap<>();
-        if(optMovie.isPresent()){
+        if (optMovie.isPresent()) {
             Movie movie = optMovie.get();
-            
+
             List<MovieCharacter> movieChars = new ArrayList<>();
 
             if (!gender.isEmpty() && !sortParam.isEmpty() && !sortDirection.isEmpty()) {
+
+                movieChars = mcr.findByMovieAndGender(movie, gender, Sort.by(Sort.Direction.fromString(sortDirection), sortParam));
+            }
+
+            if (gender.isEmpty() && !sortParam.isEmpty() && !sortDirection.isEmpty()) {
                 
-                Sort.Order order = Sort.Order.by(sortParam).with(Sort.Direction.fromString(sortDirection));
-                
-                MovieCharacter exMovieCharacter = new MovieCharacter();
-                exMovieCharacter.setGender(gender);
-                exMovieCharacter.setMovie(movie);
-                
-                movieChars = mcr.findByMovieAndGender(movie, gender, Sort.by(order));
-            }else if(gender.isEmpty() && !sortParam.isEmpty() && !sortDirection.isEmpty()){
-                
-                Sort.Order order = Sort.Order.by(sortParam).with(Sort.Direction.fromString(sortDirection));
-                mcr.findByMovie(movie, Sort.by(order));
-                
-            }else if(!gender.isEmpty()){
+                movieChars = mcr.findByMovie(movie, Sort.by(Sort.Direction.fromString(sortDirection), sortParam));
+
+            }
+
+            if (!gender.isEmpty()) {
                 movieChars = mcr.findByMovieAndGender(movie, gender);
-            } 
-            else {
+            }
+            
+            if(gender.isEmpty() && sortParam.isEmpty() && sortDirection.isEmpty()){
                 movieChars = mcr.findByMovie(movie);
             }
+            
 
             int totalCharacters = movieChars.size();
             int totalHeightInCM = 0;
 
             List<MovieCharacterDTO> mcdtos = new ArrayList<>();
             for (MovieCharacter movieChar : movieChars) {
-                int height = Integer.parseInt(movieChar.getHeight());
+                int height = movieChar.getHeight();
                 totalHeightInCM += height;
 
                 MovieCharacterDTO mcdto = new MovieCharacterDTO();

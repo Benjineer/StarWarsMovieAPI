@@ -91,7 +91,7 @@ public class BackgroundService {
 
                             MovieCharacter movieCharacter = new MovieCharacter();
                             movieCharacter.setName(charName);
-                            movieCharacter.setHeight(body.getOrDefault("height", "").toString());
+                            movieCharacter.setHeight(Integer.parseInt(body.getOrDefault("height", "").toString()));
                             movieCharacter.setMass(body.getOrDefault("mass", "").toString());
                             movieCharacter.setHairColor(body.getOrDefault("hair_color", "").toString());
                             movieCharacter.setSkinColor(body.getOrDefault("skin", "").toString());

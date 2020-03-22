@@ -28,6 +28,6 @@ public interface MovieCharacterRepository extends JpaRepository<MovieCharacter, 
     
     List<MovieCharacter> findByMovieAndGender(Movie movie,String gender);
     
-    List<MovieCharacter> findByMovieAndGender(Movie movie,String gender, Sort sort);
+    List<MovieCharacter> findByMovieAndGender(Movie movie, String gender, Sort sort);
     
 }

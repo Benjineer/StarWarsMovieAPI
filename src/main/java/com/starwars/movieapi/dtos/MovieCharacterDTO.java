@@ -13,7 +13,7 @@ public class MovieCharacterDTO {
     
     private String name;
     
-    private String height;
+    private int height;
     
     private String mass;
     
@@ -37,11 +37,11 @@ public class MovieCharacterDTO {
         this.name = name;
     }
 
-    public String getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(String height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
