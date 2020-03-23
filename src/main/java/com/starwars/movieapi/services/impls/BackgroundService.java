@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.starwars.movieapi.services;
+package com.starwars.movieapi.services.impls;
 
 import com.starwars.movieapi.entities.Movie;
 import com.starwars.movieapi.entities.MovieCharacter;
@@ -45,9 +45,9 @@ public class BackgroundService {
 
     @Autowired
     private MovieCharacterRepository mcr;
-
+    
     @Async
-    @Scheduled(fixedDelay = 1200000)
+    @Scheduled(cron = "${cronexpression}")
     public void getMovies() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
