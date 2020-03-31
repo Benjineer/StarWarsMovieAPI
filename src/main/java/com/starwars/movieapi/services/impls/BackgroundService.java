@@ -45,7 +45,7 @@ public class BackgroundService {
 
     @Autowired
     private MovieCharacterRepository mcr;
-    
+
     @Async
     @Scheduled(cron = "${cronexpression}")
     public void getMovies() {

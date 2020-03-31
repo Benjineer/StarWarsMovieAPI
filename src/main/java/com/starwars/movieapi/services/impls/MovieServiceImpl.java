@@ -100,22 +100,11 @@ public class MovieServiceImpl implements MovieService {
 
             List<MovieCharacter> movieChars = new ArrayList<>();
 
-            if (!gender.isEmpty() && !sortParam.isEmpty() && !sortDirection.isEmpty()) {
-
-                movieChars = mcr.findByMovieAndGender(movie, gender, Sort.by(Sort.Direction.fromString(sortDirection), sortParam));
-            }
-
-            if (gender.isEmpty() && !sortParam.isEmpty() && !sortDirection.isEmpty()) {
+            if (!sortParam.isEmpty() && !sortDirection.isEmpty()) {
                 
                 movieChars = mcr.findByMovie(movie, Sort.by(Sort.Direction.fromString(sortDirection), sortParam));
 
-            }
-
-            if (!gender.isEmpty()) {
-                movieChars = mcr.findByMovieAndGender(movie, gender);
-            }
-            
-            if(gender.isEmpty() && sortParam.isEmpty() && sortDirection.isEmpty()){
+            }else{
                 movieChars = mcr.findByMovie(movie);
             }
             
@@ -125,6 +114,9 @@ public class MovieServiceImpl implements MovieService {
 
             List<MovieCharacterDTO> mcdtos = new ArrayList<>();
             for (MovieCharacter movieChar : movieChars) {
+                if(!gender.isEmpty() && !movieChar.getGender().equals(gender)){
+                    continue;
+                }
                 int height = movieChar.getHeight();
                 totalHeightInCM += height;
 

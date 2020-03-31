@@ -29,6 +29,7 @@ import org.junit.BeforeClass;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -67,10 +68,6 @@ public class MovieServiceImplTest {
     private CommentDTO commentDTO;
     
     private Comment comment;
-    
-    private Comment comment1;
-    
-    private LocalDateTime commentDateTime;
     
     private MovieCharacter movieCharacter;
     
@@ -119,16 +116,9 @@ public class MovieServiceImplTest {
         comment.setId(1L);
         comment.setComment("this is a comment");
         
-        commentDateTime = LocalDateTime.now();
-        comment.setDateTime(commentDateTime);
+        comment.setDateTime(LocalDateTime.now());
         comment.setIpAddress("0:0:0:0:0:0:0:1");
         comment.setMovie(movie);
-        
-        comment1 = new Comment();
-        comment1.setComment("this is a comment");
-        comment1.setDateTime(commentDateTime);
-        comment1.setIpAddress("0:0:0:0:0:0:0:1");
-        comment1.setMovie(movie);
         
         movie.setComments(Arrays.asList(comment));
         
@@ -153,7 +143,7 @@ public class MovieServiceImplTest {
         
         movie.setCharacters(Arrays.asList(movieCharacter));
         
-        when(movieRepository.findAll(Sort.by(Sort.Direction.ASC, "releaseDate"))).thenReturn(Arrays.asList(movie));
+        when(movieRepository.findAll(any(Sort.class))).thenReturn(Arrays.asList(movie));
         
         MovieDTO movieDTO;
         movieDTO = new MovieDTO();
@@ -168,26 +158,26 @@ public class MovieServiceImplTest {
         assertEquals(expResult.size(), result.size());
     }
 
-    /**Todo Fix issue with test
+    /**
      * Test of addComment method, of class MovieServiceImpl.
      */
-//    @Test
-//    public void testAddComment() {
-//        System.out.println("addComment");
-//        
-//        when(movieRepository.findById(commentDTO.getMovieId())).thenReturn(Optional.of(new Movie()));
-//        when(commentRepository.save(comment1)).thenReturn(comment);
-//        
-//        Optional<Long> expResult = Optional.of(1L);
-//        Optional<Long> result = movieService.addComment(commentDTO);
-//        assertEquals(expResult, result);
-//    }
+    @Test
+    public void testAddComment() {
+        System.out.println("addComment");
+        
+        when(movieRepository.findById(anyLong())).thenReturn(Optional.of(movie));
+        when(commentRepository.save(any(Comment.class))).thenReturn(comment);
+        
+        Optional<Long> expResult = Optional.of(1L);
+        Optional<Long> result = movieService.addComment(commentDTO);
+        assertEquals(expResult, result);
+    }
     
     @Test
     public void testAddCommentWhenMovieIsNotFound() {
         System.out.println("AddCommentWhenMovieIsNotFound");
         
-        when(movieRepository.findById(commentDTO.getMovieId())).thenReturn(Optional.empty());
+        when(movieRepository.findById(anyLong())).thenReturn(Optional.empty());
         Optional<Long> expResult = Optional.empty();
         Optional<Long> result = movieService.addComment(commentDTO);
         assertEquals(expResult, result);
@@ -210,8 +200,9 @@ public class MovieServiceImplTest {
         expResult.put("total_height_in_cm", "170cm");
         expResult.put("total_height_in_ft_in", "5fts 6.93 inches");
         
-        when(movieRepository.findById(id)).thenReturn(Optional.of(movie));
-        when(mcr.findByMovieAndGender(movie, gender)).thenReturn(Arrays.asList(movieCharacter));
+        when(movieRepository.findById(anyLong())).thenReturn(Optional.of(movie));
+        when(mcr.findByMovie(any(Movie.class))).thenReturn(Arrays.asList(movieCharacter));
+        when(mcr.findByMovie(any(Movie.class), any(Sort.class))).thenReturn(Arrays.asList(movieCharacter));
         
         Map<String, Object> result = movieService.getMovieCharacters(id, gender, sortParam, sortDirection);
         assertEquals(expResult.size(), result.size());
@@ -229,9 +220,9 @@ public class MovieServiceImplTest {
         
         Long id = 1L;
         
-        when(movieRepository.findById(id)).thenReturn(Optional.of(movie));
+        when(movieRepository.findById(anyLong())).thenReturn(Optional.of(movie));
         
-        when(commentRepository.findByMovie(movie, Sort.by(Sort.Direction.DESC, "dateTime"))).thenReturn(Arrays.asList(comment));
+        when(commentRepository.findByMovie(any(Movie.class), any(Sort.class))).thenReturn(Arrays.asList(comment));
         
         List<CommentDTO> expResult = Arrays.asList(commentDTO);
         List<CommentDTO> result = movieService.getMovieComments(id);
