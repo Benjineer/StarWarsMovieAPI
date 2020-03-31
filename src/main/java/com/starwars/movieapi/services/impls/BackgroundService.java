@@ -47,7 +47,7 @@ public class BackgroundService {
     private MovieCharacterRepository mcr;
 
     @Async
-    @Scheduled(cron = "${cronexpression}")
+    @Scheduled(fixedDelay = 300000)
     public void getMovies() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
